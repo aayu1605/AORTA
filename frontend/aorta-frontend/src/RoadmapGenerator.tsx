@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface RoadmapStep {
   id: string
@@ -6,7 +6,6 @@ interface RoadmapStep {
   description: string
   duration: string
   tasks: string[]
-  completed: boolean
 }
 
 interface RoadmapPath {
@@ -16,319 +15,408 @@ interface RoadmapPath {
   steps: RoadmapStep[]
 }
 
+const AFTER_10TH_ROADMAPS: RoadmapPath[] = [
+  {
+    id: '10-science',
+    name: 'After 10th - Science Stream (2 Years)',
+    description: 'Focused 2-year plan for students choosing the Science stream after Class 10th.',
+    steps: [
+      {
+        id: '10-sci-year1',
+        title: 'Year 1: Class 11 Foundation',
+        description: 'Build strong fundamentals in core science subjects and start light exploration of careers.',
+        duration: '12 months',
+        tasks: [
+          'Choose PCB / PCM combination with school/board',
+          'Create a weekly timetable for Physics, Chemistry, Math/Biology',
+          'Focus on NCERT and reference books for strong basics',
+          'Join school/online science clubs and Olympiad practice',
+          'Explore careers: engineering, medicine, research, pure sciences',
+          'Start building study habits: daily revision + weekly test'
+        ]
+      },
+      {
+        id: '10-sci-year2',
+        title: 'Year 2: Class 12 & Entrance Prep',
+        description: 'Prepare for board exams plus JEE/NEET/other science entrances.',
+        duration: '12 months',
+        tasks: [
+          'Finalize target exams (JEE/NEET/State CET/others)',
+          'Solve previous year question papers for boards + target exams',
+          'Give monthly mock tests and maintain an error log',
+          'Revise formulas, diagrams and important derivations weekly',
+          'Shortlist coaching / online courses if needed',
+          'Build a simple project or science fair model to add to profile'
+        ]
+      }
+    ]
+  },
+  {
+    id: '10-commerce',
+    name: 'After 10th - Commerce Stream (2 Years)',
+    description: '2-year roadmap for students choosing Commerce after Class 10th.',
+    steps: [
+      {
+        id: '10-com-year1',
+        title: 'Year 1: Class 11 Commerce Foundation',
+        description: 'Understand core commerce subjects and basics of finance and business.',
+        duration: '12 months',
+        tasks: [
+          'Choose Commerce with/without Maths based on interest',
+          'Build basics in Accountancy, Business Studies, and Economics',
+          'Track expenses and create a small personal budget to understand money',
+          'Follow business news (newspapers, YouTube explainers)',
+          'Explore careers: CA, CS, CMA, BBA, Economics, Management',
+          'Learn Excel/Google Sheets fundamentals'
+        ]
+      },
+      {
+        id: '10-com-year2',
+        title: 'Year 2: Boards + Entrance Ready',
+        description: 'Focus on Class 12 boards and entrance prep for commerce pathways.',
+        duration: '12 months',
+        tasks: [
+          'Decide target exams: CA Foundation, CSEET, BBA/B.Com entrances',
+          'Create formula sheets for Accounts, Eco, Business Studies',
+          'Give section-wise mock tests every 2 weeks',
+          'Participate in commerce/finance competitions in school/online',
+          'Build a small project: business plan, stock market simulation, or case study',
+          'Shortlist colleges and note application timelines'
+        ]
+      }
+    ]
+  },
+  {
+    id: '10-humanities',
+    name: 'After 10th - Humanities Stream (2 Years)',
+    description: '2-year roadmap for students choosing Humanities/Arts after Class 10th.',
+    steps: [
+      {
+        id: '10-hum-year1',
+        title: 'Year 1: Class 11 Exploration',
+        description: 'Strengthen reading/writing skills and explore wide Humanities opportunities.',
+        duration: '12 months',
+        tasks: [
+          'Choose subjects like History, Political Science, Geography, Psychology, Sociology, etc.',
+          'Read one non-textbook book per month (biographies, history, current affairs)',
+          'Start writing: blogs, essays, or journaling to improve expression',
+          'Join debate, MUN, theatre, or writing clubs',
+          'Explore careers: law, civil services, media, design, social work',
+          'Build a simple portfolio of writings, presentations, or creative work'
+        ]
+      },
+      {
+        id: '10-hum-year2',
+        title: 'Year 2: Boards + Career Direction',
+        description: 'Prepare for Class 12 boards and entrance exams like law, media, and liberal arts.',
+        duration: '12 months',
+        tasks: [
+          'Practice answer-writing for theory subjects with time limits',
+          'Follow daily news and government schemes for GK/current affairs',
+          'Decide target exams: CLAT, CUET, IPU, private university tests, etc.',
+          'Take mocks for reasoning, English, and GK if aiming for law/media',
+          'Shortlist 10–15 colleges/universities with Humanities programs',
+          'Refine portfolio and prepare for interviews/personal statements'
+        ]
+      }
+    ]
+  }
+]
+
+const AFTER_12TH_ROADMAPS: RoadmapPath[] = [
+  {
+    id: '12-tech',
+    name: 'After 12th - Technology & Engineering (4 Years)',
+    description: 'Four-year roadmap for students pursuing engineering/technology after Class 12th.',
+    steps: [
+      {
+        id: '12-tech-year1',
+        title: 'Year 1: Foundation & Transition',
+        description: 'Adjust to college, clear fundamentals, and choose areas of interest.',
+        duration: 'Year 1',
+        tasks: [
+          'Understand core subjects: Programming, Math, Electronics/Mechanics (as per branch)',
+          'Join coding clubs, hackathons, or tech communities in college',
+          'Build 1–2 mini projects (calculator, basic website, simple app)',
+          'Learn Git/GitHub and push your code',
+          'Explore different branches: AI, Web, App, Systems, etc.'
+        ]
+      },
+      {
+        id: '12-tech-year2',
+        title: 'Year 2: Core Skills & Internships',
+        description: 'Strengthen core CS/Engineering skills and aim for first internship.',
+        duration: 'Year 2',
+        tasks: [
+          'Complete a Data Structures & Algorithms course',
+          'Build 2–3 intermediate projects (full‑stack app, IoT, ML mini project)',
+          'Participate in hackathons and coding contests',
+          'Apply for summer internships or research assistant roles',
+          'Start LinkedIn profile and basic resume'
+        ]
+      },
+      {
+        id: '12-tech-year3',
+        title: 'Year 3: Specialization & Exposure',
+        description: 'Choose a specialization and create visible proof of skills.',
+        duration: 'Year 3',
+        tasks: [
+          'Pick a specialization: Web, App, AI/ML, Cloud, Cybersecurity, etc.',
+          'Contribute to open‑source or long‑term team projects',
+          'Do at least one meaningful internship or industry project',
+          'Attend tech conferences/meetups, build network',
+          'Prepare for placement tests/competitive exams (GATE/CAT/others) if needed'
+        ]
+      },
+      {
+        id: '12-tech-year4',
+        title: 'Year 4: Placements & Higher Studies',
+        description: 'Convert your skills and projects into job offers or higher education admits.',
+        duration: 'Year 4',
+        tasks: [
+          'Finalize target companies or higher‑study programs',
+          'Refine resume, portfolio, and LinkedIn with measurable impact',
+          'Practice interviews: DSA/system design/HR depending on role',
+          'Complete final year project aligning with your target role',
+          'Apply to jobs, off‑campus roles, or MS/MTech/other programs'
+        ]
+      }
+    ]
+  },
+  {
+    id: '12-science',
+    name: 'After 12th - Science & Research (4 Years)',
+    description: 'Four-year roadmap for B.Sc / integrated science and research‑oriented students.',
+    steps: [
+      {
+        id: '12-sci-year1',
+        title: 'Year 1: Core Science Foundation',
+        description: 'Strengthen fundamentals and explore research areas.',
+        duration: 'Year 1',
+        tasks: [
+          'Focus on fundamental courses in your chosen major (Physics/Chemistry/Math/Biology, etc.)',
+          'Join departmental clubs and attend guest lectures',
+          'Learn basic data analysis tools (Python/R/Excel as relevant)',
+          'Read 1–2 introductory research papers or review articles',
+          'Maintain good semester grades'
+        ]
+      },
+      {
+        id: '12-sci-year2',
+        title: 'Year 2: Research Skills',
+        description: 'Get exposure to research methodology and lab work.',
+        duration: 'Year 2',
+        tasks: [
+          'Assist professors with small projects or lab work',
+          'Learn scientific writing and presentation skills',
+          'Apply for summer research fellowships (e.g. IASc, IITs, IISER)',
+          'Start early preparation for exams like JAM/GATE/CSIR‑NET (as applicable)'
+        ]
+      },
+      {
+        id: '12-sci-year3',
+        title: 'Year 3: Specialization & Publications',
+        description: 'Deepen expertise and aim for visible research output.',
+        duration: 'Year 3',
+        tasks: [
+          'Choose specialization electives aligned with your interest',
+          'Work on a longer‑term research project with a guide',
+          'Present at college/university symposiums',
+          'Attempt to write/publish a short paper/poster'
+        ]
+      },
+      {
+        id: '12-sci-year4',
+        title: 'Year 4: Higher Studies / Career Launch',
+        description: 'Decide between MSc/Integrated MSc/PhD or industry roles.',
+        duration: 'Year 4',
+        tasks: [
+          'Prepare and appear for JAM/GATE/CSIR‑NET/other exams',
+          'Apply to MSc/Integrated/PhD programs in India or abroad',
+          'If job‑oriented, build skills in analytics, data science, or lab‑based roles',
+          'Complete final‑year dissertation with strong results'
+        ]
+      }
+    ]
+  },
+  {
+    id: '12-commerce',
+    name: 'After 12th - Commerce & Business (4 Years)',
+    description: 'Four-year roadmap for B.Com/BBA/Commerce students aiming for business and finance careers.',
+    steps: [
+      {
+        id: '12-com-year1',
+        title: 'Year 1: Commerce Basics & Tools',
+        description: 'Understand fundamental commerce subjects and core tools.',
+        duration: 'Year 1',
+        tasks: [
+          'Strengthen basics in Accounting, Economics, Business Law, Statistics',
+          'Learn Excel and basic data visualisation tools',
+          'Join finance/entrepreneurship clubs in college',
+          'Follow business news and company case studies'
+        ]
+      },
+      {
+        id: '12-com-year2',
+        title: 'Year 2: Certifications & Exposure',
+        description: 'Start building an edge with certifications and internships.',
+        duration: 'Year 2',
+        tasks: [
+          'Decide if you want CA/CS/CMA or MBA later and align subjects',
+          'Attempt entry‑level certifications (e.g. NISM, basic finance/data courses)',
+          'Do a part‑time internship or volunteer in accounts/ops roles',
+          'Build a small portfolio: case studies, Excel models, presentations'
+        ]
+      },
+      {
+        id: '12-com-year3',
+        title: 'Year 3: Specialization & Internships',
+        description: 'Choose specialization and get serious work exposure.',
+        duration: 'Year 3',
+        tasks: [
+          'Specialize in Finance, Marketing, HR, Operations, Analytics, etc.',
+          'Complete 1–2 quality internships (corporate or startups)',
+          'Prepare for CAT/other MBA entrances if that is your path',
+          'Network via LinkedIn, alumni, and industry events'
+        ]
+      },
+      {
+        id: '12-com-year4',
+        title: 'Year 4: Jobs / Higher Studies',
+        description: 'Convert your profile into job offers or B‑schools.',
+        duration: 'Year 4',
+        tasks: [
+          'Sit for campus placements and off‑campus drives',
+          'Finalize MBA/Masters applications (SOPs, LORs, exam scores)',
+          'Polish resume and portfolio with clear achievements',
+          'Plan a 2–3 year post‑graduation growth roadmap'
+        ]
+      }
+    ]
+  }
+]
+
 export default function RoadmapGenerator() {
-  const [selectedPath, setSelectedPath] = useState<string>('')
-  const [currentStep, setCurrentStep] = useState<number>(0)
-  const [roadmapData, setRoadmapData] = useState<RoadmapPath[]>([])
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [level, setLevel] = useState<'10th' | '12th' | ''>('')
+  const [selectedPathId, setSelectedPathId] = useState<string>('')
 
-  // Load AI-generated roadmap if present
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('aorta_generated_roadmap')
-      if (stored) {
-        const parsed = JSON.parse(stored) as RoadmapPath
-        if (parsed && parsed.steps) {
-          setRoadmapData([parsed])
-        }
-      }
-    } catch (_) {
-      // ignore
-    }
-  }, [])
+  const paths = level === '10th'
+    ? AFTER_10TH_ROADMAPS
+    : level === '12th'
+    ? AFTER_12TH_ROADMAPS
+    : []
 
-  const generateRoadmap = async (pathType: string) => {
-    setIsGenerating(true)
-    
-    // Simulate API call to generate personalized roadmap
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const generatedRoadmaps: Record<string, RoadmapPath> = {
-      'tech': {
-        id: 'tech',
-        name: 'Technology & Engineering Path',
-        description: 'Comprehensive 3-year roadmap for technology careers',
-        steps: [
-          {
-            id: 'foundation',
-            title: 'Foundation Phase (Months 1-6)',
-            description: 'Build strong fundamentals in mathematics and programming',
-            duration: '6 months',
-            tasks: [
-              'Master algebra, calculus, and statistics',
-              'Learn Python programming basics',
-              'Complete 3 coding projects',
-              'Prepare for JEE Main/State CET',
-              'Join coding communities and forums'
-            ],
-            completed: false
-          },
-          {
-            id: 'core',
-            title: 'Core Learning Phase (Months 7-18)',
-            description: 'Pursue engineering degree with specialization',
-            duration: '12 months',
-            tasks: [
-              'Enroll in B.Tech program',
-              'Choose specialization (CSE/IT/ECE)',
-              'Complete 2 internships',
-              'Build portfolio website',
-              'Contribute to open source projects'
-            ],
-            completed: false
-          },
-          {
-            id: 'specialization',
-            title: 'Specialization Phase (Months 19-30)',
-            description: 'Deep dive into chosen technology domain',
-            duration: '12 months',
-            tasks: [
-              'Complete advanced courses in chosen field',
-              'Work on real-world projects',
-              'Get industry certifications',
-              'Build professional network',
-              'Prepare for placements'
-            ],
-            completed: false
-          },
-          {
-            id: 'career',
-            title: 'Career Launch Phase (Months 31-36)',
-            description: 'Start professional career in technology',
-            duration: '6 months',
-            tasks: [
-              'Apply for jobs and internships',
-              'Prepare for technical interviews',
-              'Create impressive portfolio',
-              'Start professional career',
-              'Plan for continuous learning'
-            ],
-            completed: false
-          }
-        ]
-      },
-      'science': {
-        id: 'science',
-        name: 'Science & Research Path',
-        description: 'Academic and research-focused career roadmap',
-        steps: [
-          {
-            id: 'foundation',
-            title: 'Foundation Phase (Months 1-6)',
-            description: 'Strengthen science fundamentals',
-            duration: '6 months',
-            tasks: [
-              'Master Physics, Chemistry, Mathematics',
-              'Read scientific journals and papers',
-              'Join science clubs and societies',
-              'Prepare for entrance exams',
-              'Develop research interests'
-            ],
-            completed: false
-          },
-          {
-            id: 'undergraduate',
-            title: 'Undergraduate Phase (Months 7-24)',
-            description: 'Pursue B.Sc with research focus',
-            duration: '18 months',
-            tasks: [
-              'Enroll in B.Sc program',
-              'Choose major subject',
-              'Complete research internships',
-              'Attend scientific conferences',
-              'Build research portfolio'
-            ],
-            completed: false
-          },
-          {
-            id: 'graduate',
-            title: 'Graduate Studies Phase (Months 25-36)',
-            description: 'Advanced studies and research',
-            duration: '12 months',
-            tasks: [
-              'Apply for M.Sc/Integrated programs',
-              'Specialize in research area',
-              'Publish research papers',
-              'Network with researchers',
-              'Plan for PhD if interested'
-            ],
-            completed: false
-          }
-        ]
-      },
-      'commerce': {
-        id: 'commerce',
-        name: 'Commerce & Business Path',
-        description: 'Business and commerce career development',
-        steps: [
-          {
-            id: 'foundation',
-            title: 'Foundation Phase (Months 1-6)',
-            description: 'Build business and commerce fundamentals',
-            duration: '6 months',
-            tasks: [
-              'Master accounting principles',
-              'Learn business mathematics',
-              'Improve communication skills',
-              'Prepare for entrance exams',
-              'Understand market dynamics'
-            ],
-            completed: false
-          },
-          {
-            id: 'undergraduate',
-            title: 'Undergraduate Phase (Months 7-24)',
-            description: 'Pursue commerce or business degree',
-            duration: '18 months',
-            tasks: [
-              'Enroll in B.Com/BBA program',
-              'Complete business internships',
-              'Learn digital marketing',
-              'Build business network',
-              'Develop entrepreneurial skills'
-            ],
-            completed: false
-          },
-          {
-            id: 'specialization',
-            title: 'Specialization Phase (Months 25-36)',
-            description: 'Choose business specialization',
-            duration: '12 months',
-            tasks: [
-              'Choose specialization (Finance/Marketing)',
-              'Get professional certifications',
-              'Start side business project',
-              'Prepare for MBA',
-              'Build industry connections'
-            ],
-            completed: false
-          }
-        ]
-      }
-    }
-    
-    setRoadmapData([generatedRoadmaps[pathType]])
-    setIsGenerating(false)
-  }
-
-  const toggleTaskCompletion = (stepIndex: number, taskIndex: number) => {
-    setRoadmapData(prev => prev.map(path => ({
-      ...path,
-      steps: path.steps.map((step, sIndex) => 
-        sIndex === stepIndex 
-          ? {
-              ...step,
-              tasks: step.tasks.map((task, tIndex) => 
-                tIndex === taskIndex ? task : task
-              )
-            }
-          : step
-      )
-    })))
-  }
-
-  const exportRoadmap = () => {
-    const roadmap = roadmapData[0]
-    const content = `
-# ${roadmap.name}
-
-${roadmap.description}
-
-${roadmap.steps.map(step => `
-## ${step.title}
-**Duration:** ${step.duration}
-**Description:** ${step.description}
-
-### Tasks:
-${step.tasks.map(task => `- [ ] ${task}`).join('\n')}
-`).join('\n')}
-
-Generated by AORTA - AI Career & Education Advisor
-    `
-    
-    const blob = new Blob([content], { type: 'text/markdown' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${roadmap.name.replace(/\s+/g, '_')}_Roadmap.md`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+  const activePath = paths.find(p => p.id === selectedPathId) || null
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">AI-Powered Roadmap Generator</h2>
-      <p className="text-primary-200">Get a personalized 3-year career roadmap based on your goals and interests.</p>
+      <h2 className="text-2xl font-semibold">Roadmap Builder</h2>
+      <p className="text-primary-200">
+        Choose whether you are planning <span className="font-semibold">after Class 10th</span> or <span className="font-semibold">after Class 12th</span>, then pick a stream to see a clear, step‑by‑step roadmap.
+      </p>
 
-      {roadmapData.length === 0 && (
-        <div className="rounded-lg bg-primary-900/30 p-6">
-          <h3 className="text-lg font-medium mb-4">Choose your career path</h3>
-          <div className="grid md:grid-cols-3 gap-4">
+      {/* Step 1: Choose level */}
+      {level === '' && (
+        <section className="rounded-lg bg-primary-900/40 p-6 space-y-4">
+          <h3 className="text-lg font-medium mb-2">Select your current stage</h3>
+          <div className="grid md:grid-cols-2 gap-4">
             <button
-              onClick={() => generateRoadmap('tech')}
-              disabled={isGenerating}
-              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/30 hover:border-primary-600 disabled:opacity-50"
+              onClick={() => {
+                setLevel('10th')
+                setSelectedPathId('')
+              }}
+              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
             >
-              <h4 className="font-medium">Technology & Engineering</h4>
-              <p className="text-sm text-primary-300 mt-1">Software development, engineering, data science</p>
+              <h4 className="font-semibold">After Class 10th</h4>
+              <p className="text-sm text-primary-300 mt-1">
+                2-year roadmap for Science, Commerce, or Humanities streams.
+              </p>
             </button>
             <button
-              onClick={() => generateRoadmap('science')}
-              disabled={isGenerating}
-              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/30 hover:border-primary-600 disabled:opacity-50"
+              onClick={() => {
+                setLevel('12th')
+                setSelectedPathId('')
+              }}
+              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
             >
-              <h4 className="font-medium">Science & Research</h4>
-              <p className="text-sm text-primary-300 mt-1">Academic research, scientific careers</p>
-            </button>
-            <button
-              onClick={() => generateRoadmap('commerce')}
-              disabled={isGenerating}
-              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/30 hover:border-primary-600 disabled:opacity-50"
-            >
-              <h4 className="font-medium">Commerce & Business</h4>
-              <p className="text-sm text-primary-300 mt-1">Business, finance, entrepreneurship</p>
+              <h4 className="font-semibold">After Class 12th</h4>
+              <p className="text-sm text-primary-300 mt-1">
+                4-year roadmap for college, placements, and higher studies.
+              </p>
             </button>
           </div>
-          {isGenerating && (
-            <div className="mt-4 text-center">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-              <p className="mt-2 text-sm text-primary-300">Generating your personalized roadmap...</p>
-            </div>
-          )}
-        </div>
+        </section>
       )}
 
-      {roadmapData.length > 0 && (
-        <div className="space-y-6">
+      {/* Step 2: Choose stream/path */}
+      {level !== '' && !activePath && (
+        <section className="rounded-lg bg-primary-900/40 p-6 space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold">{roadmapData[0].name}</h3>
-            <div className="flex gap-2">
-              <a
-                href="/pdfs/roadmap-sample.pdf"
-                download="my-career-roadmap.pdf"
-                className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm inline-block text-center"
-              >
-                Export PDF
-              </a>
+            <h3 className="text-lg font-medium">
+              {level === '10th'
+                ? 'Choose your stream for the next 2 years'
+                : 'Choose your path for the next 4 years'}
+            </h3>
+            <button
+              onClick={() => {
+                setLevel('')
+                setSelectedPathId('')
+              }}
+              className="text-xs px-3 py-1 rounded bg-primary-800 hover:bg-primary-700"
+            >
+              Change stage
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {paths.map((path) => (
               <button
-                onClick={() => {
-                  setRoadmapData([])
-                  localStorage.removeItem('aorta_generated_roadmap')
-                }}
+                key={path.id}
+                onClick={() => setSelectedPathId(path.id)}
+                className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
+              >
+                <h4 className="font-semibold">{path.name}</h4>
+                <p className="text-sm text-primary-300 mt-1">{path.description}</p>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Step 3: Show roadmap */}
+      {activePath && (
+        <section className="space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold">{activePath.name}</h3>
+              <p className="text-sm text-primary-300">{activePath.description}</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setSelectedPathId('')}
                 className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm"
               >
-                Generate New
+                Choose another path
+              </button>
+              <button
+                onClick={() => {
+                  setLevel('')
+                  setSelectedPathId('')
+                }}
+                className="px-4 py-2 rounded bg-primary-900 border border-primary-700 hover:bg-primary-800 text-white text-sm"
+              >
+                Start over
               </button>
             </div>
           </div>
 
           <div className="space-y-4">
-            {roadmapData[0].steps.map((step, stepIndex) => (
+            {activePath.steps.map((step, index) => (
               <div key={step.id} className="rounded-lg bg-primary-900/40 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center">
                     <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center text-sm font-bold mr-4">
-                      {stepIndex + 1}
+                      {index + 1}
                     </div>
                     <div>
                       <h4 className="font-medium text-lg">{step.title}</h4>
@@ -336,24 +424,14 @@ Generated by AORTA - AI Career & Education Advisor
                       <p className="text-xs text-primary-400">Duration: {step.duration}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-primary-300">Progress</div>
-                    <div className="w-24 h-2 bg-primary-800 rounded mt-1">
-                      <div className="h-2 bg-primary-500 rounded" style={{ width: '0%' }}></div>
-                    </div>
-                  </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <h5 className="font-medium text-sm">Tasks:</h5>
                   <ul className="space-y-2">
                     {step.tasks.map((task, taskIndex) => (
                       <li key={taskIndex} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="mr-3 rounded"
-                          onChange={() => toggleTaskCompletion(stepIndex, taskIndex)}
-                        />
+                        <input type="checkbox" className="mr-3 rounded" />
                         <span className="text-sm text-primary-200">{task}</span>
                       </li>
                     ))}
@@ -362,10 +440,9 @@ Generated by AORTA - AI Career & Education Advisor
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
     </div>
   )
 }
-
 

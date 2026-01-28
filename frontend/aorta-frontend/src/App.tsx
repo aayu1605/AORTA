@@ -309,33 +309,6 @@ function After10th() {
           </div>
         </div>
       </section>
-
-      {/* Alternative Paths */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Alternative Paths After 10th</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-lg bg-primary-900/40 p-4">
-            <h3 className="font-medium mb-2">Vocational Courses</h3>
-            <p className="text-sm text-primary-300 mb-3">Skill-based programs that lead directly to employment.</p>
-            <ul className="text-sm text-primary-200 space-y-1">
-              <li>• ITI (Industrial Training Institute)</li>
-              <li>• Polytechnic Diploma</li>
-              <li>• Vocational Training Programs</li>
-              <li>• Skill Development Courses</li>
-            </ul>
-          </div>
-          <div className="rounded-lg bg-primary-900/40 p-4">
-            <h3 className="font-medium mb-2">Scholarship Opportunities</h3>
-            <p className="text-sm text-primary-300 mb-3">Financial support for meritorious students.</p>
-            <ul className="text-sm text-primary-200 space-y-1">
-              <li>• National Merit Scholarship</li>
-              <li>• State Government Scholarships</li>
-              <li>• Private Foundation Grants</li>
-              <li>• Merit-cum-Means Scholarships</li>
-            </ul>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
