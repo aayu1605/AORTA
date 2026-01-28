@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route, Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMemo, useState, useEffect } from 'react'
+import logo from './assets/react.svg'
 import About from './About'
 import Quiz from './Quiz'
 import RoadmapGenerator from './RoadmapGenerator'
@@ -27,7 +28,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <header className="border-b border-primary-800/60 bg-primary-900/40 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md sticky top-0 z-20">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="AORTA Logo" className="h-8 w-8 mr-3" />
+            <img src={logo} alt="AORTA Logo" className="h-8 w-8 mr-3" />
             <span className="text-2xl font-black text-white tracking-wide">AORTA</span>
           </Link>
           <nav className="flex gap-4 text-sm">
@@ -268,7 +269,18 @@ function After10th() {
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 <Link to="/quiz" className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm">Take Career Quiz</Link>
-                <Link to="/roadmap" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">Build Roadmap</Link>
+                <Link
+                  to={`/roadmap?stage=10th&path=${
+                    selectedStream === 'science'
+                      ? '10-science'
+                      : selectedStream === 'commerce'
+                      ? '10-commerce'
+                      : '10-humanities'
+                  }`}
+                  className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm"
+                >
+                  Build Roadmap
+                </Link>
                 <Link to="/colleges" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">Explore Colleges</Link>
                 <Link to="/swot" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">SWOT Analysis</Link>
               </div>
@@ -325,7 +337,7 @@ function After12th() {
         
         <div className="rounded-lg bg-primary-900/30 p-6">
           <h2 className="text-xl font-semibold mb-4">Choose Your Career Track</h2>
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="grid md:grid-cols-4 gap-4 mb-6">
             <button
               onClick={() => setSelectedTrack('undergraduate')}
               className={`p-4 rounded-lg border-2 text-left transition-colors ${
@@ -337,6 +349,18 @@ function After12th() {
               <h3 className="font-medium">Undergraduate Studies</h3>
               <p className="text-sm text-primary-300 mt-1">Bachelor's degrees in various fields</p>
               <p className="text-xs text-primary-400 mt-2">Leads to: B.Tech, B.Sc, B.Com, BA, BBA, etc.</p>
+            </button>
+            <button
+              onClick={() => setSelectedTrack('medical')}
+              className={`p-4 rounded-lg border-2 text-left transition-colors ${
+                selectedTrack === 'medical' 
+                  ? 'border-primary-500 bg-primary-800/50' 
+                  : 'border-primary-700 bg-primary-900/30 hover:border-primary-600'
+              }`}
+            >
+              <h3 className="font-medium">Medical & Healthcare</h3>
+              <p className="text-sm text-primary-300 mt-1">MBBS, BDS, Nursing & allied health</p>
+              <p className="text-xs text-primary-400 mt-2">Leads to: Doctor, Dentist, Nurse, Allied Health</p>
             </button>
             <button
               onClick={() => setSelectedTrack('polytechnic')}
@@ -368,11 +392,25 @@ function After12th() {
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
                 <Link to="/quiz" className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm">Take Career Quiz</Link>
-                <Link to="/roadmap" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">Build Roadmap</Link>
+                <Link
+                  to={`/roadmap?stage=12th&path=${selectedTrack}`}
+                  className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm"
+                >
+                  Build Roadmap
+                </Link>
                 <Link to="/colleges" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">Explore Colleges</Link>
                 <Link to="/swot" className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm">SWOT Analysis</Link>
               </div>
-              <p className="text-sm text-primary-300">Selected: {selectedTrack === 'undergraduate' ? 'Undergraduate Studies' : selectedTrack === 'polytechnic' ? 'Polytechnic/Diploma' : 'Apprenticeship'}</p>
+              <p className="text-sm text-primary-300">
+                Selected:{' '}
+                {selectedTrack === 'undergraduate'
+                  ? 'Undergraduate Studies'
+                  : selectedTrack === 'polytechnic'
+                  ? 'Polytechnic/Diploma'
+                  : selectedTrack === 'apprenticeship'
+                  ? 'Apprenticeship'
+                  : 'Medical & Healthcare'}
+              </p>
             </div>
           )}
         </div>

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 interface RoadmapStep {
   id: string
@@ -125,9 +126,9 @@ const AFTER_10TH_ROADMAPS: RoadmapPath[] = [
 
 const AFTER_12TH_ROADMAPS: RoadmapPath[] = [
   {
-    id: '12-tech',
-    name: 'After 12th - Technology & Engineering (4 Years)',
-    description: 'Four-year roadmap for students pursuing engineering/technology after Class 12th.',
+    id: 'undergraduate',
+    name: 'After 12th - Undergraduate Degree (4 Years)',
+    description: 'Four-year roadmap for students pursuing degrees like B.Tech, B.Sc, B.Com, BA, BBA etc.',
     steps: [
       {
         id: '12-tech-year1',
@@ -184,9 +185,9 @@ const AFTER_12TH_ROADMAPS: RoadmapPath[] = [
     ]
   },
   {
-    id: '12-science',
-    name: 'After 12th - Science & Research (4 Years)',
-    description: 'Four-year roadmap for B.Sc / integrated science and research‑oriented students.',
+    id: 'polytechnic',
+    name: 'After 12th - Polytechnic / Diploma + Lateral Entry (4 Years)',
+    description: 'Roadmap combining diploma years and lateral entry into degree/industry over four years.',
     steps: [
       {
         id: '12-sci-year1',
@@ -240,9 +241,9 @@ const AFTER_12TH_ROADMAPS: RoadmapPath[] = [
     ]
   },
   {
-    id: '12-commerce',
-    name: 'After 12th - Commerce & Business (4 Years)',
-    description: 'Four-year roadmap for B.Com/BBA/Commerce students aiming for business and finance careers.',
+    id: 'apprenticeship',
+    name: 'After 12th - Apprenticeship / Skill-First (4 Years)',
+    description: 'Skill-first roadmap for students focusing on apprenticeships, on-the-job learning, and upskilling.',
     steps: [
       {
         id: '12-com-year1',
@@ -293,6 +294,63 @@ const AFTER_12TH_ROADMAPS: RoadmapPath[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'medical',
+    name: 'After 12th - Medical & Healthcare (4+ Years)',
+    description: 'Roadmap for NEET aspirants and early MBBS/BDS/BSc Nursing journey (first four years).',
+    steps: [
+      {
+        id: '12-med-year1',
+        title: 'Year 1: NEET Prep & Admission',
+        description: 'Finish Class 12th and focus on cracking NEET/other medical entrances.',
+        duration: 'Year 1',
+        tasks: [
+          'Finalize target courses: MBBS, BDS, BSc Nursing, BAMS, BHMS, etc.',
+          'Follow a strict timetable covering Physics, Chemistry, Biology daily',
+          'Solve previous year NEET papers and chapter-wise MCQs',
+          'Give full-length mock tests and analyse mistakes every week',
+          'Shortlist government and private medical colleges with your expected rank range'
+        ]
+      },
+      {
+        id: '12-med-year2',
+        title: 'Year 2: Pre-Clinical Foundation',
+        description: 'Build a strong base in first-year medical subjects.',
+        duration: 'Year 2',
+        tasks: [
+          'Focus on Anatomy, Physiology, and Biochemistry basics',
+          'Develop disciplined reading and note-making habits',
+          'Join study groups and discuss clinical relevance of topics',
+          'Observe seniors and mentors to understand medical college culture',
+          'Maintain a healthy routine to manage stress and workload'
+        ]
+      },
+      {
+        id: '12-med-year3',
+        title: 'Year 3: Clinical Exposure & Skills',
+        description: 'Move from theory to wards and patient interaction.',
+        duration: 'Year 3',
+        tasks: [
+          'Spend meaningful time in OPDs and wards observing cases',
+          'Practice case-taking and basic clinical examinations',
+          'Participate in CMEs, conferences, and medical quizzes',
+          'Start early awareness of PG exam patterns (NEET-PG/INI-CET, etc.)'
+        ]
+      },
+      {
+        id: '12-med-year4',
+        title: 'Year 4: Internship & PG Planning',
+        description: 'Convert your MBBS/BDS/BSc Nursing learning into real-world care and future plans.',
+        duration: 'Year 4',
+        tasks: [
+          'Take internship postings seriously and learn procedures under supervision',
+          'Decide between PG preparation, government service, or private practice',
+          'Create a realistic 2–3 year plan for PG entrance preparation if needed',
+          'Build a professional CV with rotations, conferences, and any research work'
+        ]
+      }
+    ]
   }
 ]
 
@@ -307,6 +365,22 @@ export default function RoadmapGenerator() {
     : []
 
   const activePath = paths.find(p => p.id === selectedPathId) || null
+
+  const location = useLocation()
+
+  // Initialize from URL query parameters, e.g. /roadmap?stage=12th&path=polytechnic
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const stage = params.get('stage') as '10th' | '12th' | null
+    const path = params.get('path') || ''
+
+    if (stage === '10th' || stage === '12th') {
+      setLevel(stage)
+      if (path) {
+        setSelectedPathId(path)
+      }
+    }
+  }, [location.search])
 
   return (
     <div className="space-y-6">
