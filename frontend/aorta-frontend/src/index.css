@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg1: #050b1a;
+  --bg2: #0a1633;
+  --glass: rgba(255, 255, 255, 0.04);
+  --stroke: rgba(255, 255, 255, 0.08);
+  --accent: #22d3ee;
+}
+
+body {
+  background: radial-gradient(circle at 20% 20%, #0f1f3d 0, transparent 35%),
+    radial-gradient(circle at 80% 0%, #112751 0, transparent 30%),
+    radial-gradient(circle at 50% 80%, #0b1b36 0, transparent 40%),
+    linear-gradient(135deg, #020711 0%, #050b1a 100%);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.neo-surface {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(16px);
+}
+
+.grid-glow {
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.4), rgba(0,0,0,0.95));
+}
+
+.orb {
+  position: absolute;
+  filter: blur(40px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.orb-1 { width: 320px; height: 320px; background: #22d3ee; top: -60px; left: -40px; animation: float 9s ease-in-out infinite; }
+.orb-2 { width: 280px; height: 280px; background: #7c3aed; bottom: -40px; right: -20px; animation: float 11s ease-in-out infinite; }
+.orb-3 { width: 220px; height: 220px; background: #0ea5e9; top: 40%; left: 60%; animation: float 13s ease-in-out infinite; }
+
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+.glow-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.08), transparent 40%),
+              radial-gradient(circle at 80% 0%, rgba(124, 58, 237, 0.06), transparent 35%);
+  opacity: 1;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-14px) translateX(8px); }
+}
