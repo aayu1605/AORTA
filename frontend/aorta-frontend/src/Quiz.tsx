@@ -153,7 +153,7 @@ export default function Quiz() {
   const [answers, setAnswers] = useState<Record<string, Choice>>({})
   const QUESTIONS = useMemo(() => getRandomizedQuestions(), [])
 
-  const progressPct = useMemo(() => ((index) / QUESTIONS.length) * 100, [index])
+  const progressPct = useMemo(() => ((index) / QUESTIONS.length) * 100, [index, QUESTIONS.length])
   const canNext = Boolean(answers[QUESTIONS[index]?.id])
 
   const finished = index >= QUESTIONS.length
@@ -195,8 +195,8 @@ export default function Quiz() {
     const top = compatibility[0]
     return (
       <section className="space-y-6">
-        <div className="bg-gradient-to-r from-primary-800/70 via-primary-700/60 to-primary-900/60 rounded-2xl p-6 border border-primary-700/60 shadow-lg shadow-primary-900/40">
-          <h2 className="text-3xl font-bold">Your Compatibility Analysis</h2>
+        <div className="bg-gradient-to-r from-primary-800/70 via-primary-700/60 to-primary-900/60 rounded-2xl p-4 md:p-6 border border-primary-700/60 shadow-lg shadow-primary-900/40">
+          <h2 className="text-2xl md:text-3xl font-bold">Your Compatibility Analysis</h2>
           <p className="text-primary-200 mt-2">Based on your answers, here’s how you align with each path.</p>
         </div>
 
@@ -229,13 +229,13 @@ export default function Quiz() {
             <a
               href="/roadmap"
               onClick={saveResult}
-              className="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white text-sm"
+              className="min-h-[44px] px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white text-sm"
             >
               Build Roadmap
             </a>
             <a
               href="/exams"
-              className="px-4 py-2 rounded-lg bg-primary-800 hover:bg-primary-700 text-white text-sm"
+              className="min-h-[44px] px-4 py-2 rounded-lg bg-primary-800 hover:bg-primary-700 text-white text-sm"
             >
               View Exams
             </a>
@@ -244,7 +244,7 @@ export default function Quiz() {
                 setIndex(0)
                 setAnswers({})
               }}
-              className="px-4 py-2 rounded-lg bg-primary-700 hover:bg-primary-600 text-white text-sm"
+              className="min-h-[44px] px-4 py-2 rounded-lg bg-primary-700 hover:bg-primary-600 text-white text-sm"
             >
               Retake Quiz
             </button>
@@ -259,8 +259,8 @@ export default function Quiz() {
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Quick Career Quiz</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl md:text-2xl font-semibold">Quick Career Quiz</h2>
         <div className="text-sm text-primary-200">Question {index + 1} of {QUESTIONS.length}</div>
       </div>
       <div className="w-full h-2 bg-primary-900 rounded">
@@ -285,16 +285,16 @@ export default function Quiz() {
         </fieldset>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-3">
         <button
-          className="px-4 py-2 rounded bg-primary-800 text-sm disabled:opacity-50"
+          className="min-h-[44px] px-4 py-2 rounded bg-primary-800 text-sm disabled:opacity-50"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
           disabled={index === 0}
         >
           Back
         </button>
         <button
-          className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-sm disabled:opacity-50"
+          className="min-h-[44px] px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-sm disabled:opacity-50"
           onClick={() => setIndex((i) => i + 1)}
           disabled={!canNext}
         >

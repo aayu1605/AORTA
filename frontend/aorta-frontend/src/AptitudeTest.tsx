@@ -392,7 +392,7 @@ export default function AptitudeTest() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Comprehensive Aptitude Test</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Comprehensive Aptitude Test</h2>
           <p className="text-primary-200 mb-6">
             Take our comprehensive aptitude test to discover your strengths across Science, Commerce, and Humanities fields.
           </p>
@@ -425,7 +425,7 @@ export default function AptitudeTest() {
         <div className="text-center">
           <button
             onClick={startTest}
-            className="px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-semibold rounded-lg text-lg transition-colors"
+            className="min-h-[44px] px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-semibold rounded-lg text-lg transition-colors"
           >
             Start Aptitude Test
           </button>
@@ -443,7 +443,7 @@ export default function AptitudeTest() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Your Aptitude Test Results</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Your Aptitude Test Results</h2>
           <p className="text-primary-200 mb-6">
             Based on your performance, here are your strengths and recommendations:
           </p>
@@ -545,8 +545,8 @@ export default function AptitudeTest() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Aptitude Test</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl md:text-2xl font-semibold">Aptitude Test</h2>
         <div className="text-sm text-primary-200">
           Question {currentQuestion + 1} of {APTITUDE_QUESTIONS.length} • Time: {formatTime(timeElapsed)}
         </div>
@@ -597,17 +597,17 @@ export default function AptitudeTest() {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-3">
         <button
           onClick={prevQuestion}
           disabled={currentQuestion === 0}
-          className="px-6 py-2 bg-primary-800 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+          className="min-h-[44px] px-6 py-2 bg-primary-800 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
         >
           Previous
         </button>
         <button
           onClick={nextQuestion}
-          className="px-6 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors"
+          className="min-h-[44px] px-6 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors"
         >
           {currentQuestion === APTITUDE_QUESTIONS.length - 1 ? 'Finish Test' : 'Next Question'}
         </button>

@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Link, useParams } from 'react-router-dom'
+import { HashRouter, Routes, Route, Link, useParams, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useMemo, useState, useEffect } from 'react'
 import logo from './assets/react.svg'
@@ -19,19 +19,37 @@ import { realApiIntegration, type College } from './api/collegesApi'
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [routeLoading, setRouteLoading] = useState(false)
+  const location = useLocation()
+
+  useEffect(() => {
+    setRouteLoading(true)
+    const timer = window.setTimeout(() => setRouteLoading(false), 250)
+    return () => window.clearTimeout(timer)
+  }, [location.pathname, location.search])
+
   return (
-    <div className="min-h-screen text-white relative overflow-hidden">
+    <div className="min-h-screen text-white relative overflow-x-hidden">
       <div className="orb orb-1" />
       <div className="orb orb-2" />
       <div className="orb orb-3" />
       <div className="grid-glow absolute inset-0 opacity-60" />
       <header className="border-b border-primary-800/60 bg-primary-900/40 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <Link to="/" className="flex items-center">
             <img src={logo} alt="AORTA Logo" className="h-8 w-8 mr-3" />
-            <span className="text-2xl font-black text-white tracking-wide">AORTA</span>
+            <span className="text-xl sm:text-2xl font-black text-white tracking-wide">AORTA</span>
           </Link>
-          <nav className="flex gap-4 text-sm">
+          <button
+            type="button"
+            className="md:hidden min-h-[44px] min-w-[44px] px-3 rounded-lg bg-primary-800/80 border border-primary-700"
+            onClick={() => setMenuOpen(prev => !prev)}
+            aria-label="Toggle navigation menu"
+          >
+            {menuOpen ? 'X' : '≡'}
+          </button>
+          <nav className="hidden md:flex gap-4 text-sm">
             <Link to="/careers" className="hover:text-accent-400 transition-colors">{t('nav.careers')}</Link>
             <Link to="/after-10th" className="hover:text-accent-400 transition-colors">{t('nav.after10')}</Link>
             <Link to="/after-12th" className="hover:text-accent-400 transition-colors">{t('nav.after12')}</Link>
@@ -44,9 +62,27 @@ function Layout({ children }: { children: React.ReactNode }) {
             <Link to="/contact" className="hover:text-accent-400 transition-colors">Contact Us</Link>
           </nav>
         </div>
+        {menuOpen && (
+          <nav className="md:hidden px-4 pb-3 grid grid-cols-2 gap-2 text-sm">
+            <Link to="/careers" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Careers</Link>
+            <Link to="/after-10th" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">After 10th</Link>
+            <Link to="/after-12th" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">After 12th</Link>
+            <Link to="/colleges" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Colleges</Link>
+            <Link to="/exams" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Exams</Link>
+            <Link to="/roadmap" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Roadmap</Link>
+            <Link to="/swot" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">SWOT</Link>
+            <Link to="/mentors" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Mentors</Link>
+            <Link to="/about" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">About</Link>
+            <Link to="/contact" onClick={() => setMenuOpen(false)} className="min-h-[44px] px-3 py-2 rounded bg-primary-900/70">Contact</Link>
+          </nav>
+        )}
       </header>
       <main className="relative max-w-6xl mx-auto px-4 py-8">
-        {children}
+        {routeLoading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="h-8 w-8 rounded-full border-2 border-primary-400 border-t-transparent animate-spin" />
+          </div>
+        ) : children}
       </main>
       <footer className="mt-12 border-t border-primary-800/60 relative z-10">
         <div className="max-w-6xl mx-auto px-4 py-8">
@@ -980,7 +1016,7 @@ function CollegeDetail() {
           setCollege(data)
         }
         setError(null)
-      } catch (err) {
+      } catch {
         setError('Failed to load college details')
       } finally {
         setLoading(false)

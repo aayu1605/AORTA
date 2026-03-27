@@ -7,7 +7,10 @@ export default defineConfig({
   base: '/AORTA/',
   server: {
     port: 3000,
-    open: true
+    open: true,
+    proxy: {
+      '/api': 'http://localhost:8000'
+    }
   },
   build: {
     outDir: 'dist',

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface SWOTItem {
   id: string
@@ -22,6 +22,8 @@ interface FieldData {
   opportunities: string[]
   threats: string[]
 }
+
+type SWOTCategory = 'strengths' | 'weaknesses' | 'opportunities' | 'threats'
 
 // AI-driven field analysis data
 const FIELD_ANALYSIS: Record<string, FieldData> = {
@@ -319,16 +321,16 @@ export default function SWOTAnalysis() {
     }
   }
 
-  const getItemsByCategory = (category: string) => {
+  const getItemsByCategory = (category: SWOTCategory) => {
     return swotItems.filter(item => item.category === category)
   }
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">SWOT Analysis Lab</h2>
+      <h2 className="text-xl md:text-2xl font-semibold">SWOT Analysis Lab</h2>
       <p className="text-primary-200">Analyze your career situation and create an actionable plan.</p>
 
-      <div className="rounded-lg bg-primary-900/30 p-6">
+      <div className="rounded-lg bg-primary-900/30 p-4 md:p-6">
         <h3 className="text-lg font-medium mb-4">Career Goal</h3>
         <input
           type="text"
@@ -344,7 +346,7 @@ export default function SWOTAnalysis() {
             <select
               value={selectedField}
               onChange={(e) => setSelectedField(e.target.value)}
-              className="w-full px-4 py-2 rounded bg-primary-900 border border-primary-800 text-white"
+              className="w-full min-h-[44px] px-4 py-2 rounded bg-primary-900 border border-primary-800 text-white"
             >
               <option value="">Choose a field...</option>
               <option value="technology">Technology & Engineering</option>
@@ -357,7 +359,7 @@ export default function SWOTAnalysis() {
             <button
               onClick={generateAIAnalysis}
               disabled={!selectedField || isAnalyzing}
-              className="w-full px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium"
+              className="w-full min-h-[44px] px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium"
             >
               {isAnalyzing ? (
                 <div className="flex items-center justify-center">
@@ -393,7 +395,7 @@ export default function SWOTAnalysis() {
             <p className="text-sm text-primary-300 mb-4">{category.description}</p>
             
             <div className="space-y-2 mb-4">
-              {getItemsByCategory(key as any).map(item => (
+              {getItemsByCategory(key as SWOTCategory).map(item => (
                 <div key={item.id} className={`flex items-center justify-between p-2 rounded ${
                   item.aiGenerated ? 'bg-blue-900/30 border border-blue-700' : 'bg-primary-800/50'
                 }`}>
@@ -419,14 +421,14 @@ export default function SWOTAnalysis() {
                 placeholder={`Add ${category.label.toLowerCase()}...`}
                 value={selectedCategory === key ? newItem : ''}
                 onChange={(e) => {
-                  setSelectedCategory(key as any)
+                  setSelectedCategory(key as SWOTCategory)
                   setNewItem(e.target.value)
                 }}
                 className="flex-1 px-3 py-1 rounded bg-primary-900 border border-primary-800 text-sm text-white placeholder-primary-400"
               />
               <button
                 onClick={addSWOTItem}
-                className="px-3 py-1 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm"
+              className="min-h-[44px] px-3 py-1 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm"
               >
                 Add
               </button>
@@ -437,11 +439,11 @@ export default function SWOTAnalysis() {
 
       {swotItems.length > 0 && (
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
             <h3 className="text-lg font-medium">Action Plan</h3>
             <button
               onClick={generateActionPlan}
-              className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm"
+              className="min-h-[44px] px-4 py-2 rounded bg-primary-600 hover:bg-primary-500 text-white text-sm"
             >
               Generate Action Plan
             </button>

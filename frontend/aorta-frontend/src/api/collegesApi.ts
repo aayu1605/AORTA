@@ -84,7 +84,7 @@ export const collegesApi = {
 // Real API integration functions
 export const realApiIntegration = {
   // Replace with actual API endpoints
-  baseUrl: 'http://localhost:8000/api/v1',
+  baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
   
   async fetchColleges(filters?: {
     state?: string
@@ -123,7 +123,7 @@ export const realApiIntegration = {
     }
   },
 
-  async submitQuizResults(results: any): Promise<any> {
+  async submitQuizResults(results: Record<string, unknown>): Promise<Record<string, unknown>> {
     try {
       const response = await fetch(`${this.baseUrl}/quiz/submit`, {
         method: 'POST',
@@ -139,7 +139,7 @@ export const realApiIntegration = {
     }
   },
 
-  async generateRoadmap(userProfile: any): Promise<any> {
+  async generateRoadmap(userProfile: Record<string, unknown>): Promise<Record<string, unknown>> {
     try {
       const response = await fetch(`${this.baseUrl}/roadmap/generate`, {
         method: 'POST',

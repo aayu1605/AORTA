@@ -151,7 +151,7 @@ export default function Careers() {
   return (
     <section className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold mb-4">Explore Career Options</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Explore Career Options</h2>
         <p className="text-primary-200 text-lg">Discover diverse career paths and find your perfect match</p>
       </div>
 
@@ -162,7 +162,7 @@ export default function Careers() {
             placeholder="Search careers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg bg-primary-900 border border-primary-800 text-white placeholder-primary-400 focus:outline-none focus:border-primary-600"
+            className="w-full min-h-[44px] px-4 py-2 rounded-lg bg-primary-900 border border-primary-800 text-white placeholder-primary-400 focus:outline-none focus:border-primary-600"
           />
         </div>
         <div className="flex flex-wrap gap-2">
@@ -170,7 +170,7 @@ export default function Careers() {
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              className={`min-h-[44px] px-4 py-2 rounded-lg transition-colors ${
                 selectedCategory === category.id
                   ? 'bg-primary-600 text-white'
                   : 'bg-primary-800 text-primary-200 hover:bg-primary-700'
@@ -222,11 +222,11 @@ export default function Careers() {
                   setSelectedCareer(career)
                   setShowModal(true)
                 }}
-                className="flex-1 px-3 py-2 bg-primary-600 hover:bg-primary-500 text-white text-sm rounded transition-colors"
+                className="min-h-[44px] flex-1 px-3 py-2 bg-primary-600 hover:bg-primary-500 text-white text-sm rounded transition-colors"
               >
                 Learn More
               </button>
-              <button className="px-3 py-2 bg-primary-800 hover:bg-primary-700 text-white text-sm rounded transition-colors">
+              <button className="min-h-[44px] px-3 py-2 bg-primary-800 hover:bg-primary-700 text-white text-sm rounded transition-colors">
                 Save
               </button>
             </div>
@@ -242,7 +242,7 @@ export default function Careers() {
               setSearchTerm('')
               setSelectedCategory('all')
             }}
-            className="mt-4 px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded transition-colors"
+            className="mt-4 min-h-[44px] px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded transition-colors"
           >
             Clear Filters
           </button>
@@ -252,7 +252,7 @@ export default function Careers() {
       <div className="bg-gradient-to-r from-primary-800/50 to-primary-900/50 rounded-lg p-8 text-center">
         <h3 className="text-2xl font-bold mb-4">Can't Find Your Dream Career?</h3>
         <p className="text-primary-200 mb-6">Take our AI-powered assessment to discover careers that match your unique profile</p>
-        <Link to="/quiz" className="inline-block px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors">
+        <Link to="/quiz" className="inline-block min-h-[44px] px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors">
           Take Career Assessment
         </Link>
       </div>
@@ -360,14 +360,14 @@ export default function Careers() {
                 </div>
               </div>
 
-              <div className="flex gap-4 mt-8">
-                <Link to="/quiz" className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors text-center">
+              <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                <Link to="/quiz" className="min-h-[44px] flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-lg transition-colors text-center">
                   Take Career Quiz
                 </Link>
-                <Link to="/roadmap" className="flex-1 px-6 py-3 bg-primary-800 hover:bg-primary-700 text-white rounded-lg transition-colors text-center">
+                <Link to="/roadmap" className="min-h-[44px] flex-1 px-6 py-3 bg-primary-800 hover:bg-primary-700 text-white rounded-lg transition-colors text-center">
                   Build Roadmap
                 </Link>
-                <Link to="/colleges" className="flex-1 px-6 py-3 bg-primary-800 hover:bg-primary-700 text-white rounded-lg transition-colors text-center">
+                <Link to="/colleges" className="min-h-[44px] flex-1 px-6 py-3 bg-primary-800 hover:bg-primary-700 text-white rounded-lg transition-colors text-center">
                   Find Colleges
                 </Link>
               </div>

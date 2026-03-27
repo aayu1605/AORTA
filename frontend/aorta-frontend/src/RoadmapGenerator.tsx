@@ -384,7 +384,7 @@ export default function RoadmapGenerator() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">Roadmap Builder</h2>
+      <h2 className="text-xl md:text-2xl font-semibold">Roadmap Builder</h2>
       <p className="text-primary-200">
         Choose whether you are planning <span className="font-semibold">after Class 10th</span> or <span className="font-semibold">after Class 12th</span>, then pick a stream to see a clear, step‑by‑step roadmap.
       </p>
@@ -399,7 +399,7 @@ export default function RoadmapGenerator() {
                 setLevel('10th')
                 setSelectedPathId('')
               }}
-              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
+              className="min-h-[44px] p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
             >
               <h4 className="font-semibold">After Class 10th</h4>
               <p className="text-sm text-primary-300 mt-1">
@@ -411,7 +411,7 @@ export default function RoadmapGenerator() {
                 setLevel('12th')
                 setSelectedPathId('')
               }}
-              className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
+              className="min-h-[44px] p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
             >
               <h4 className="font-semibold">After Class 12th</h4>
               <p className="text-sm text-primary-300 mt-1">
@@ -425,7 +425,7 @@ export default function RoadmapGenerator() {
       {/* Step 2: Choose stream/path */}
       {level !== '' && !activePath && (
         <section className="rounded-lg bg-primary-900/40 p-6 space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
             <h3 className="text-lg font-medium">
               {level === '10th'
                 ? 'Choose your stream for the next 2 years'
@@ -436,18 +436,18 @@ export default function RoadmapGenerator() {
                 setLevel('')
                 setSelectedPathId('')
               }}
-              className="text-xs px-3 py-1 rounded bg-primary-800 hover:bg-primary-700"
+              className="min-h-[44px] text-xs px-3 py-1 rounded bg-primary-800 hover:bg-primary-700"
             >
               Change stage
             </button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {paths.map((path) => (
               <button
                 key={path.id}
                 onClick={() => setSelectedPathId(path.id)}
-                className="p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
+                className="min-h-[44px] p-4 rounded-lg border-2 border-primary-700 bg-primary-900/40 hover:border-primary-500 text-left transition-colors"
               >
                 <h4 className="font-semibold">{path.name}</h4>
                 <p className="text-sm text-primary-300 mt-1">{path.description}</p>
@@ -460,7 +460,7 @@ export default function RoadmapGenerator() {
       {/* Step 3: Show roadmap */}
       {activePath && (
         <section className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
             <div>
               <h3 className="text-xl font-semibold">{activePath.name}</h3>
               <p className="text-sm text-primary-300">{activePath.description}</p>
@@ -468,7 +468,7 @@ export default function RoadmapGenerator() {
             <div className="flex gap-2">
               <button
                 onClick={() => setSelectedPathId('')}
-                className="px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm"
+                className="min-h-[44px] px-4 py-2 rounded bg-primary-800 hover:bg-primary-700 text-white text-sm"
               >
                 Choose another path
               </button>
@@ -477,7 +477,7 @@ export default function RoadmapGenerator() {
                   setLevel('')
                   setSelectedPathId('')
                 }}
-                className="px-4 py-2 rounded bg-primary-900 border border-primary-700 hover:bg-primary-800 text-white text-sm"
+                className="min-h-[44px] px-4 py-2 rounded bg-primary-900 border border-primary-700 hover:bg-primary-800 text-white text-sm"
               >
                 Start over
               </button>
