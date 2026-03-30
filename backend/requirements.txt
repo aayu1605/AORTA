@@ -4,3 +4,8 @@ psycopg2-binary==2.9.9
 SQLAlchemy==2.0.35
 python-dotenv==1.0.1
 openai==1.50.2
+requests
+boto3
+flask
+flask-cors
+python-dotenv
