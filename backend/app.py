@@ -25,9 +25,9 @@ def call_bedrock(prompt: str, max_tokens: int = 800) -> str:
         # Use bedrock-runtime for invoke_model
         runtime_client = boto3.client(
             'bedrock-runtime',
-            aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-            aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
-            region_name=os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
+            aws_access_key_id='AKIAV72H6YKVVKF5ZXQE',
+            aws_secret_access_key='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',
+            region_name='us-east-1'
         )
         
         print("🔍 Created Bedrock runtime client, calling invoke_model...")
@@ -345,60 +345,32 @@ def chat():
     if not message and not messages:
         return jsonify({"reply": "Please type a question or topic you'd like help with."})
 
-    # Use Bedrock for AI responses
-    try:
-        # Build conversation context
-        conversation_context = []
-        if messages:
-            for m in messages:
-                role = 'user' if m.get('sender') == 'user' or m.get('role') == 'user' else 'assistant'
-                content = m.get('text') or m.get('content') or ''
-                if content:
-                    conversation_context.append(f"{role}: {content}")
-        
-        # Create the prompt with system instructions and conversation history
-        system_prompt = """You are AORTA, a helpful, encouraging education and career mentor for students in India. 
-You help them understand career paths, entrance exams (JEE, NEET, CLAT, NDA, CA etc), college admissions, and skill development.
-Always respond in simple English or Hinglish. Be encouraging, friendly, and specific to Indian education system.
-Answer clearly and concisely. If asked about exams, colleges, or careers, give up-to-date general guidance, 
-avoid fabricating precise dates or fees if uncertain, and suggest how to verify via official sites."""
-        
-        if conversation_context:
-            full_prompt = f"{system_prompt}\n\nConversation history:\n" + "\n".join(conversation_context[-6:]) + f"\n\nuser: {message}\n\nassistant:"
+    # Temporarily disable Bedrock due to payment issue - use enhanced fallback
+    message_lower = message.lower()
+    
+    # JEE related responses
+    if 'jee' in message_lower or 'joint entrance' in message_lower:
+        if 'subject' in message_lower or 'prepare' in message_lower:
+            return jsonify({"reply": "For JEE preparation, you need to focus on three main subjects: Physics, Chemistry, and Mathematics. Physics is most weightage (40%), followed by Chemistry (30%), and Mathematics (30%). Start with strong basics and practice previous year papers regularly."})
+        elif 'syllabus' in message_lower or 'pattern' in message_lower:
+            return jsonify({"reply": "JEE Main syllabus includes: Physics (Mechanics, Thermodynamics, Electromagnetism, Optics, Modern Physics), Chemistry (Physical, Organic, Inorganic), and Mathematics (Algebra, Calculus, Coordinate Geometry, Trigonometry). Focus on NCERT books first."})
         else:
-            full_prompt = f"{system_prompt}\n\nuser: {message}\n\nassistant:"
-        
-        ai_response = call_bedrock(full_prompt, max_tokens=600)
-        reply_text = ai_response.strip()
-        
-        return jsonify({"reply": reply_text})
-        
-    except Exception as e:
-        print(f"❌ Chat AI error: {e}")
-        # Fall through to fallback responses
-
-    # Prefer local ml_service (free) if reachable
-    try:
-        ml_base = os.environ.get('ML_SERVICE_URL', 'http://localhost:8001')
-        resp = requests.post(f'{ml_base}/chat', json={
-            'message': message,
-            'history': messages,
-        }, timeout=1.5)
-        if resp.ok:
-            data = resp.json()
-            if data.get('reply'):
-                return jsonify({'reply': data['reply']})
-    except Exception:
-        pass
-
-    # Fallback non-scripted echo-style helper if no API key
-    helper = (
-        "I'm here to help with careers, exams, colleges, study plans, and roadmaps. "
-        "Please ask anything. Tip: Specify your class, stream, target exam, or interests for better guidance."
-    )
-    if message:
-        return jsonify({"reply": f"You said: {message}\n\n{helper}"})
-    return jsonify({"reply": helper})
+            return jsonify({"reply": "JEE is one of India's toughest entrance exams. Key tips: Start early, focus on concepts, practice regularly, take mock tests, and analyze your mistakes. Would you like specific study guidance for any subject?"})
+    
+    # Career guidance responses
+    elif 'career' in message_lower or 'future' in message_lower:
+        if '10th' in message_lower or 'class 10' in message_lower:
+            return jsonify({"reply": "After 10th, you have great options: Science (PCM/PCB), Commerce, Arts. Based on your interests, choose wisely. Science opens engineering/medical fields, Commerce opens CA/business fields, Arts opens creative/humanities fields."})
+        elif '12th' in message_lower or 'class 12' in message_lower:
+            return jsonify({"reply": "After 12th, consider your stream: Science students can target JEE/NEET, Commerce students can aim for CA/CS, Arts students can prepare for UPSC/Civil Services. Start preparing early!"})
+    
+    # General educational guidance
+    elif 'study' in message_lower or 'how to' in message_lower:
+        return jsonify({"reply": "Effective study tips: 1) Make a schedule, 2) Focus on concepts not rote learning, 3) Practice regularly, 4) Take breaks, 5) Stay healthy. Would you like subject-specific tips?"})
+    
+    # Default fallback
+    else:
+        return jsonify({"reply": f"I understand you're asking about: {message}. I'm here to help with careers, exams, colleges, and study guidance. Could you provide more details about your class (10th/12th) and interests so I can give better advice?"})
 
 @app.post('/api/v1/contact')
 def contact():
