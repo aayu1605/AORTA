@@ -25,8 +25,6 @@ def call_bedrock(prompt: str, max_tokens: int = 800) -> str:
         # Use bedrock-runtime for invoke_model
         runtime_client = boto3.client(
             'bedrock-runtime',
-            aws_access_key_id='AKIAV72H6YKVVKF5ZXQE',
-            aws_secret_access_key='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',
             region_name='us-east-1'
         )
         
